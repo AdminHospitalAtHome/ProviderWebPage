@@ -1,3 +1,5 @@
+import { ChatClient } from "@azure/communication-chat";
+
 const endpointurl =
   'https://hospitalathomechat.unitedstates.communication.azure.com';
 

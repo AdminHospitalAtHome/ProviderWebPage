@@ -2,6 +2,12 @@ import { StyleSheet } from 'react-native';
 
 import EditScreenInfo from '../../components/EditScreenInfo';
 import { Text, View } from '../../components/Themed';
+import { ChatClient } from "@azure/communication-chat";
+import { AzureCommunicationTokenCredential } from '@azure/communication-common';
+const endpointurl =
+  'https://hospitalathomechat.unitedstates.communication.azure.com';
+
+
 import {
   getChatThread,
   getCommunicationId,
@@ -19,6 +25,8 @@ export default function TabOneScreen() {
   const [chatThreadId, setChatThreadId] = useState('');
   const [chatMessage, setChatMessage] = useState<any[]>([]);
   const [giftedChatMessages, setGiftedChatMessages] = useState<any[]>([]);
+  const [chatClient, setChatClient] = useState<ChatClient | undefined>(undefined);
+  const [messageCounter, setMessageCounter] = useState<number>(1);
 
   useEffect(() => {
     getCommunicationId(200000001)
@@ -41,6 +49,20 @@ export default function TabOneScreen() {
         });
     }
   }, [communicationId]);
+
+  useEffect(() => {
+    if (accessToken) {
+      setChatClient(new ChatClient(endpointurl, new AzureCommunicationTokenCredential(accessToken)));
+      if (chatClient) {
+
+        chatClient.startRealtimeNotifications();
+        chatClient.on('chatMessageReceived', (e) => {
+          setMessageCounter(messageCounter + 1);
+
+        })
+      }
+    }
+  }, [accessToken]);
 
   useEffect(() => {
     if (accessToken && communicationId) {
@@ -79,9 +101,10 @@ export default function TabOneScreen() {
         }
         setChatMessage(res.value);
         setGiftedChatMessages(parsedMsg);
+        console.log(messageCounter)
       });
     }
-  }, [chatThreadId, accessToken]);
+  }, [chatThreadId, accessToken, messageCounter]);
 
   const onSend = useCallback(
     (messages:any[] = []) => {
