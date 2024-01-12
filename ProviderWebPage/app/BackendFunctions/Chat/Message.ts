@@ -135,14 +135,14 @@ export function getAllMessages(chatThreadClient: ChatThreadClient): Promise<any[
 
 
 
-export function sendMessage(chatThreadClient: ChatThreadClient, message: IMessage[], setChatMessages: React.Dispatch<React.SetStateAction<any[]>>, ChatMessages: any[]) {
+export function sendMessage(chatThreadClient: ChatThreadClient, message: IMessage[], setChatMessages: React.Dispatch<React.SetStateAction<any[]>>,) {
   const snedMessageRessageRequest = {content: message[0].text}
   try {
     chatThreadClient.sendMessage(snedMessageRessageRequest);
   } catch {
     console.error("Could not send message");
   }
-  setChatMessages(ChatMessages);
+  setChatMessages(previous => previous);
 
 
 }
