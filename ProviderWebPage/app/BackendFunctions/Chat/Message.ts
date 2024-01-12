@@ -1,5 +1,6 @@
 import {ChatClient, ChatMessage, ChatThreadClient} from "@azure/communication-chat";
 import {AzureCommunicationTokenCredential} from "@azure/communication-common";
+import {IMessage} from "react-native-gifted-chat";
 
 const endpointurl =
   'https://hospitalathomechat.unitedstates.communication.azure.com';
@@ -134,28 +135,14 @@ export function getAllMessages(chatThreadClient: ChatThreadClient): Promise<any[
 
 
 
-export function sendMessage(
-  threadId: string,
-  accessToken: string,
-  message: string,
-) {
-  return new Promise((resolve, reject) => {
-    fetch(
-      `https://hospitalathomechat.unitedstates.communication.azure.com/chat/threads/${threadId}/messages?api-version=2023-11-07`,
-      {
-        method: 'POST',
-        body: JSON.stringify({content: message}),
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          'Content-Type': 'application/json',
-        },
-      },
-    ).then(res => {
-      if (res.status === 201) {
-        resolve(res);
-      } else {
-        reject(`did not send message, status: ${res.status}`);
-      }
-    });
-  });
+export function sendMessage(chatThreadClient: ChatThreadClient, message: IMessage[], setChatMessages: React.Dispatch<React.SetStateAction<any[]>>, ChatMessages: any[]) {
+  const snedMessageRessageRequest = {content: message[0].text}
+  try {
+    chatThreadClient.sendMessage(snedMessageRessageRequest);
+  } catch {
+    console.error("Could not send message");
+  }
+  setChatMessages(ChatMessages);
+
+
 }

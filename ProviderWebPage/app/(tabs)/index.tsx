@@ -61,8 +61,7 @@ export default function TabOneScreen() {
     return (
         <GiftedChat
           messages={chatMessages}
-          onSend={() => {
-          }}
+          onSend={(messages) => {sendMessage(chatThreadClient, messages, setChatMessages, chatMessages)}}
           user={
             {_id: temp_communicationId}
           }
