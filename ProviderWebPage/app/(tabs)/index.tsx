@@ -13,7 +13,7 @@ import {
   getAllMessages,
   getChatThread,
   getCommunicationId,
-  getCommunicationToken,
+  getCommunicationToken, getMessageNotification,
   initChatClient, initChatThreadClient,
   sendMessage, temp_communicationId,
 } from '../BackendFunctions/Chat/Message'
@@ -37,6 +37,7 @@ export default function TabOneScreen() {
 
   useEffect(() => {
     if (chatClient) {
+      getMessageNotification(chatClient, setChatMessages);
       initChatThreadClient(chatClient).then(res => {
         setChatThreadClient(res)
         if (res) {

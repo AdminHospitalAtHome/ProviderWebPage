@@ -1,6 +1,6 @@
 import {ChatClient, ChatMessage, ChatThreadClient} from "@azure/communication-chat";
 import {AzureCommunicationTokenCredential} from "@azure/communication-common";
-import {IMessage} from "react-native-gifted-chat";
+import {GiftedChat, IMessage} from "react-native-gifted-chat";
 
 const endpointurl =
   'https://hospitalathomechat.unitedstates.communication.azure.com';
@@ -100,6 +100,29 @@ export function getCommunicationToken(communicationId: string): Promise<string> 
 //   });
 // }
 
+export function getMessageNotification(chatClient: ChatClient, setChatMessages: React.Dispatch<React.SetStateAction<any[]>>) {
+  chatClient.startRealtimeNotifications();
+  chatClient.on('chatMessageReceived', (m) => {
+    try {
+      let dictionary = {
+        _id: m.id,
+        text: m.message,
+        createdAt: m.createdOn,
+        user: {
+          _id: m.sender.communicationUserId,
+          name: 'TEMPROARY',
+        }
+      }
+
+      setChatMessages(previous => GiftedChat.append(previous, [dictionary]));
+    } catch {
+
+    }
+
+
+  })
+}
+
 
 export function getAllMessages(chatThreadClient: ChatThreadClient): Promise<any[]> {
   return new Promise(async resolve => {
@@ -135,7 +158,7 @@ export function getAllMessages(chatThreadClient: ChatThreadClient): Promise<any[
 
 
 
-export function sendMessage(chatThreadClient: ChatThreadClient, message: IMessage[], setChatMessages: React.Dispatch<React.SetStateAction<any[]>>,) {
+export function sendMessage(chatThreadClient: ChatThreadClient, message: IMessage[], setChatMessages: React.Dispatch<React.SetStateAction<any[]>>) {
   const snedMessageRessageRequest = {content: message[0].text}
   try {
     chatThreadClient.sendMessage(snedMessageRessageRequest);
