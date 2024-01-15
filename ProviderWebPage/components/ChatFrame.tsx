@@ -19,7 +19,6 @@ import {
 } from '../BackendFunctions/Chat/Message'
 import React, {useCallback, useEffect, useState} from 'react';
 import {Bubble, GiftedChat} from 'react-native-gifted-chat';
-import {ChatSideBar} from  '../../components/ChatSideBar'
 
 
 export default function TabOneScreen() {
