@@ -5,7 +5,8 @@ For any questions, please contact the previous year's development team...
 You will need to have your environment already set up for the local development of the react-native portion of the application. If you need help doing this please refer to the appropriate repository. After that, follow the below steps
 1. Clone this repository
 2. Run `npm install`
-3. Run `npm start web` - We are only using the web, so ios or android are un needed.
+3. Run `npm start`
+4. Press `w` to start web mode - the IOS and andriod modes wont be used as we are just making a website for this part
 
 ## 🧰 Development Resources
 In order to have built in navigation and other usefull features, we are using EXPO.
